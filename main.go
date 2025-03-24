@@ -8,10 +8,7 @@ import (
 
 func main() {
 	router := handlers.NewRouter()
+	router.LoadHTMLGlob("templates/*")
 	fmt.Println("Server started at http://localhost:8081/register")
-	router.Run()
+	router.Run(":8081")
 }
-
-// func (h *EmailIDHandler) Routes(rg *gin.RouterGroup) {
-
-// 	rg.POST("/", middlewares.ValidateRequest(&request.Email{}), h.sendEmail)
