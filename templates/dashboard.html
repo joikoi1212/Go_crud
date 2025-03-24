@@ -51,15 +51,7 @@
 </script>
 
 <body>
-    <h1>Insert Message</h1>
-    <form method="POST" action="/login">
-        <label for="insert">Insert Message:</label>
-        <input type="text" id="insert" name="insert" required><br><br>
-        <button type="button" name="insert" value="insert"></button><br><br>
-        <label for="delete">Delete Message:</label>
-        <button type="button" name="delete" value="delete"></button><br><br>
-        <label for="update">Update Message:</label>
-        <button type="button" name="update" value="update"></button><br><br>
-    </form>
+    <h1>Welcome {{ .userID }}</h1>
+    
 </body>
 </html>

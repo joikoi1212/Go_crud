@@ -1,12 +1,15 @@
 package api
 
 import (
-	"net/http"
+	"log"
 
 	"github.com/joikoi1212/Go_CRUD/core"
 )
 
-func Login_api(w http.ResponseWriter, r *http.Request) {
+func Login_api(email string, password string) int {
 	DB := core.InitDB()
-	DB.Exec("SELECT * FROM users")
+	var userID int
+	DB.QueryRow("SELECT id FROM users where email = ?", email).Scan(&userID)
+	log.Println("User ID: ", userID)
+	return userID
 }

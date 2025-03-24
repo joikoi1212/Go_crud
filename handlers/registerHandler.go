@@ -18,7 +18,7 @@ func RegisterHandler(c *gin.Context) {
 		username := c.PostForm("username")
 		password := c.PostForm("password")
 		email := c.PostForm("email")
-		api.Register_api(username, password, email)
+		api.Register_api(username, email, password)
 		c.HTML(http.StatusOK, "login.html", nil)
 		fmt.Println("Redirected to login page")
 		return

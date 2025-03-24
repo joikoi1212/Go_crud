@@ -12,5 +12,6 @@ func NewRouter() *gin.Engine {
 	r.POST("/login", LoginHandler)
 	r.GET("/register", RegisterHandler)
 	r.POST("/register", RegisterHandler)
+	r.GET("/dashboard", DashboardHandler)
 	return r
 }
