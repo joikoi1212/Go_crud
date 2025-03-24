@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+
+<script>
+
+        document.getElementById("insert").addEventListener("click", function() {
+        fetch("lib/api/", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ /* any data you want to send */ })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+        });
+
+        document.getElementById("delete").addEventListener("click", function() {
+        fetch("/lib/api", {
+            method: "DELETE",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ /* any data you want to send */ })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+        });
+
+        document.getElementById("update").addEventListener("click", function() {
+        fetch("/lib/api", {
+            method: "PUT",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ /* any data you want to send */ })
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+        });
+
+
+</script>
+
+<body>
+    <h1>Insert Message</h1>
+    <form method="POST" action="/login">
+        <label for="insert">Insert Message:</label>
+        <input type="text" id="insert" name="insert" required><br><br>
+        <button type="button" name="insert" value="insert"></button><br><br>
+        <label for="delete">Delete Message:</label>
+        <button type="button" name="delete" value="delete"></button><br><br>
+        <label for="update">Update Message:</label>
+        <button type="button" name="update" value="update"></button><br><br>
+    </form>
+</body>
+</html>
