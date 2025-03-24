@@ -1,39 +1,30 @@
 package handlers
 
 import (
-	"fmt"
-	"html/template"
-	"log"
+	"github.com/gin-gonic/gin"
+
 	"net/http"
-	"path/filepath"
 )
 
-type EmailIDHandler struct {
-	Log *log.Logger
+type LoginForm struct {
+	Username string `form:"username" binding:"required"`
+	Password string `form:"password" binding:"required"`
 }
 
-func LoginHandler(res http.ResponseWriter, req *http.Request) {
-	test()
-	loginTemplate := template.Must(template.ParseFiles(filepath.Join("templates", "login.html")))
-
-	if req.Method == http.MethodGet {
-		loginTemplate.Execute(res, nil)
+func LoginHandler(c *gin.Context) {
+	loginForm := LoginForm{}
+	if c.Request.Method == http.MethodGet {
+		c.HTML(http.StatusOK, "templates/login.html", nil)
 		return
 	}
-	if req.Method == http.MethodPost {
-		username := req.FormValue("username")
-		password := req.FormValue("password")
-		fmt.Fprintf(res, "Username: %s, Password: %s", username, password)
+	if c.Request.Method == http.MethodPost {
+
+		if err := c.Bind(&loginForm); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+			return
+		}
+
 		return
 	}
-	http.Error(res, "Method not allowed", http.StatusMethodNotAllowed)
-
-}
-
-func test() {
-	panic("unimplemented")
-}
-
-func (s *EmailIDHandler) test() {
-	s.Log.Println("test")
+	c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Method not allowed"})
 }

@@ -4,23 +4,32 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joikoi1212/Go_CRUD/lib/api"
 )
 
-func RegisterHandler(res http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodGet {
-		http.ServeFile(res, req, "templates/register.html")
+type registerForm struct {
+	Username string `form:"username" binding:"required"`
+	Password string `form:"password" binding:"required"`
+	Email    string `form:"email" binding:"required"`
+}
+
+func RegisterHandler(c *gin.Context) {
+	var RegisterForm registerForm
+	if c.Request.Method == http.MethodGet {
+		c.HTML(http.StatusOK, "templates/register.html", nil)
 		return
 	}
-	if req.Method == http.MethodPost {
-		username := req.FormValue("username")
-		email := req.FormValue("email")
-		password := req.FormValue("password")
-		fmt.Println(res, "Email: %s, Username: %s, Password: %s", email, username, password)
-		api.Register_api(username, email, password)
-		http.Redirect(res, req, "http://localhost:8081/login", http.StatusFound)
+	if c.Request.Method == http.MethodPost {
+
+		if err := c.Bind(&RegisterForm); err != nil {
+			api.Register_api(RegisterForm.Username, RegisterForm.Email, RegisterForm.Password)
+			c.Redirect(http.StatusFound, "templates/login.html")
+			fmt.Println("Redirected to login page")
+			return
+		}
 
 		return
 	}
-
+	c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Method not allowed"})
 }

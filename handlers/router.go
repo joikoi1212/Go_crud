@@ -2,17 +2,16 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/mux"
 )
 
-func NewRouter() *mux.Router {
+func NewRouter() *gin.Engine {
 	r := gin.Default()
 
 	// Rotas
-	r.HandleFunc("/login", LoginHandler).Methods("GET")
-	r.HandleFunc("/login", LoginHandler).Methods("POST")
-	r.HandleFunc("/register", RegisterHandler).Methods("GET")
-	r.HandleFunc("/register", RegisterHandler).Methods("POST")
+	r.GET("/login", LoginHandler)
+	r.POST("/login", LoginHandler)
+	r.GET("/register", RegisterHandler)
+	r.POST("/register", RegisterHandler)
 	return r
 }
 
