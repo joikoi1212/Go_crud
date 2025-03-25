@@ -1,15 +1,25 @@
 package handlers
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func DashboardHandler(c *gin.Context) {
-	userID, _ := c.Get("userID")
-	log.Println("User ID from session: ", userID)
-	c.HTML(http.StatusOK, "dashboard.html", gin.H{"userID": userID})
+	if c.Request.Method == http.MethodGet {
+		c.HTML(http.StatusOK, "register.html", nil)
+		return
+	}
+	if c.Request.Method == http.MethodPost {
 
+		message := c.PostForm("message")
+
+		api.crud_operations()
+		c.HTML(http.StatusOK, "login.html", nil)
+		fmt.Println("Redirected to login page")
+		return
+	}
+	c.JSON(http.StatusMethodNotAllowed, gin.H{"error": "Method not allowed"})
 }

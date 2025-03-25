@@ -8,18 +8,37 @@
 
 <script>
 
-        document.getElementById("insert").addEventListener("click", function() {
-        fetch("lib/api/", {
-            method: "POST",
-            headers: {
-            "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ /* any data you want to send */ })
-        })
+const userID = "{{ .userID }}";
+
+document.addEventListener("DOMContentLoaded", function() {
+    fetch("/lib/api/get_messages")
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            const dropdown = document.getElementById("messageDropdown");
+            data.forEach(message => {
+                const option = document.createElement("option");
+                option.value = message.id;
+                option.text = message.message;
+                dropdown.add(option);
+            });
+        })
         .catch(error => console.error(error));
-        });
+});
+
+
+document.getElementById("insert").addEventListener("click", function() {
+  const createInput = document.getElementById("create");
+  fetch("/lib/api/crud_operations", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message: createInput.value, userID: userID })
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error(error));
+});
 
         document.getElementById("delete").addEventListener("click", function() {
         fetch("/lib/api", {
@@ -52,6 +71,16 @@
 
 <body>
     <h1>Welcome {{ .userID }}</h1>
-    
+
+    <label for="Insert">Create:</label>
+    <input type="text" id="create" name="create" required><br><br>
+    <button id="insert">Insert</button>
+    <label for="messageDropdown">Messages:</label>
+    <select id="messageDropdown" name="messageDropdown">
+        <option value="">Select a message</option>
+    </select><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br>
+    <input type="submit" value="Login">
 </body>
 </html>
